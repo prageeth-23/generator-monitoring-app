@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "719398923310",
+    "firebase_url": "https://generator-monitoring-sys-41355-default-rtdb.firebaseio.com",
+    "project_id": "generator-monitoring-sys-41355",
+    "storage_bucket": "generator-monitoring-sys-41355.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719398923310:android:d7dae3f1c9813ea734c3bf",
+        "android_client_info": {
+          "package_name": "com.genypragee.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy0YjauInZUtgZyiG3twlUkr99Tj9wEvo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
