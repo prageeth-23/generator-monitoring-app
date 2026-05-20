@@ -11,7 +11,8 @@
   <img src="https://github.com/user-attachments/assets/cbd0200e-7be9-4386-9de6-3a63013e6014" width="200" alt="Sign Up Page"/>
   <img src="https://github.com/user-attachments/assets/7aac7d03-b0f0-4fd9-95e6-117f88d77859" width="200" alt="Dashboard"/>
   <img src="https://github.com/user-attachments/assets/d40965a4-6bb9-4f94-b9ea-98b5a0d7ed45" width="200" alt="Sensors"/>
-  <img src="https://github.com/user-attachments/assets/5dff9c99-77f8-4e5f-997f-132985186ee0" width="200" alt="Analytics"/>
+  <img src="https://github.com/user-attachments/assets/89ffb50c-0fa8-4175-bab1-52facaa2cf6d" width="200" alt="Login Page"/>
+
 </p>
 
 ---
