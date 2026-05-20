@@ -1,28 +1,25 @@
 import { useState, useEffect } from "react";
 import { onValue, ref, database } from "@/lib/firebase";
 import type { SensorReading, Alert, GeneratorStatus, ActuatorState } from "@/lib/generator-data";
-import { getGeneratorStatus, getActuatorState } from "@/lib/generator-data";
+import {
+  getGeneratorStatus,
+  getActuatorState,
+  generateCurrentReading,
+  generateHistoricalData,
+  generateAlerts,
+} from "@/lib/generator-data";
 
 export function useFirebaseSensors() {
-  // Initial state: Start with zero values (No more dummy data)
-  const [currentReading, setCurrentReading] = useState<SensorReading>({
-    timestamp: new Date().toISOString(),
-    fuel: 0,
-    voltage: 0,
-    current: 0,
-    vibration: 0,
-    power: 0,
-  });
-
-  const [historicalData, setHistoricalData] = useState<SensorReading[]>([]);
-  const [alerts, setAlerts] = useState<Alert[]>([]);
-  const [generatorStatus, setGeneratorStatus] = useState<GeneratorStatus>({ status: 'off', lastUpdate: new Date().toISOString() });
+  const [currentReading, setCurrentReading] = useState<SensorReading>(generateCurrentReading());
+  const [historicalData, setHistoricalData] = useState<SensorReading[]>(generateHistoricalData(48));
+  const [alerts, setAlerts] = useState<Alert[]>(generateAlerts());
+  const [generatorStatus, setGeneratorStatus] = useState<GeneratorStatus>(getGeneratorStatus());
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    // 1. LISTEN ONLY TO FIREBASE LIVE DATA
+    // Try Firebase - if connected use real data, else keep mock data
     const unsubCurrent = onValue(
-      ref(database, "sensorData/current"), 
+      ref(database, "sensorData/current"),
       (snapshot) => {
         const data = snapshot.val();
         if (data) {
@@ -37,15 +34,31 @@ export function useFirebaseSensors() {
           });
           setIsConnected(true);
         }
+        // If no Firebase data, mock data already set in useState - no change needed
       },
       (error) => {
-        console.error("Firebase connection failed:", error);
+        console.error("Firebase not connected - using mock data:", error);
         setIsConnected(false);
+        // Keep mock data as fallback
+        setCurrentReading(generateCurrentReading());
+        setHistoricalData(generateHistoricalData(48));
+        setAlerts(generateAlerts());
+        setGeneratorStatus(getGeneratorStatus());
       }
     );
 
-    return () => unsubCurrent();
-  }, []);
+    // Simulate live updates every 5 seconds when not connected to Firebase
+    const mockInterval = setInterval(() => {
+      if (!isConnected) {
+        setCurrentReading(generateCurrentReading());
+      }
+    }, 5000);
+
+    return () => {
+      unsubCurrent();
+      clearInterval(mockInterval);
+    };
+  }, [isConnected]);
 
   const actuatorState: ActuatorState = getActuatorState(currentReading);
 
